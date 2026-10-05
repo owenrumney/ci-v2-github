@@ -1,0 +1,22 @@
+name: Infracost
+on: [pull_request]
+
+jobs:
+  infracost:
+    runs-on: ubuntu-latest
+    container: ghcr.io/infracost/ci:2
+    permissions:
+      contents: read
+      pull-requests: write
+    env:
+      INFRACOST_CLI_AUTHENTICATION_TOKEN: ${{ secrets.INFRACOST_CLI_AUTHENTICATION_TOKEN }}
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.base.sha }}
+          path: base
+      - uses: actions/checkout@v4
+        with:
+          path: head
+      - run: infracost-ci diff --base-path base --head-path head
