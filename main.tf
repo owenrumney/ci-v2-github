@@ -10,3 +10,10 @@ resource "aws_instance" "bastion" {
   ami           = "ami-c55b159cbfafe1f0"
   instance_type = "t3.4xlarge"
 }
+
+resource "aws_instance" "batch" {
+  count = 2
+
+  ami           = "ami-c55b159cbfafe1f0"
+  instance_type = "m5.8xlarge"
+}
